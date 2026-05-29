@@ -1,9 +1,14 @@
 import { streamText } from "ai";
-import { openai } from "@ai-sdk/openai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { createOpenAI } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 
-// Allow the serverless function to run for up to 60 seconds on Vercel
 export const maxDuration = 60;
+
+// Configure the OpenAI provider to point to Groq's API
+const groq = createOpenAI({
+  baseURL: "https://api.groq.com/openai/v1",
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 export async function POST(req: Request) {
   const { prompt, model, tone, keywords } = await req.json();
@@ -22,12 +27,13 @@ Format your response in clean markdown with:
 
 Keep the content actionable, concise, and conversion-focused.`;
 
-  // Dynamically select the correct model provider
+  // Dynamically select the provider based on the frontend selection
   let selectedModel;
-  if (model === "GPT-4o") {
-    selectedModel = openai("gpt-4o");
+  if (model === "Gemini 2.5 Flash") {
+    selectedModel = google("gemini-2.5-flash");
   } else {
-    selectedModel = anthropic("claude-3-opus-20240229");
+    // Default to Groq Llama 3
+    selectedModel = groq("llama3-8b-8192");
   }
 
   try {
@@ -37,7 +43,6 @@ Keep the content actionable, concise, and conversion-focused.`;
       prompt: prompt,
     });
 
-    // Streams plain text back to your manual fetch reader in page.tsx
     return result.toTextStreamResponse();
   } catch (error) {
     console.error("AI Generation Error:", error);

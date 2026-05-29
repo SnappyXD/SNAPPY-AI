@@ -37,7 +37,7 @@ const navigation: NavItem[] = [
   { label: "Settings", icon: Settings, id: "settings" },
 ];
 
-const modelOptions = ["GPT-4o", "Claude 3 Opus"];
+const modelOptions = ["Groq Llama 3 (Fast)", "Gemini 2.5 Flash"];
 const toneOptions = ["Professional", "Casual", "Witty", "Formal", "Friendly"];
 
 type HistoryItem = {
