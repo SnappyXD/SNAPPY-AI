@@ -9,7 +9,7 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'Snappy AI - AI Content Generator',
   description: 'Modern AI content generator dashboard built with Next.js and Tailwind CSS.',
-  generator: 'v0.app',
+  generator: 'snappy.app',
   icons: {
     icon: '/icon.svg',
     apple: '/icon.svg',
